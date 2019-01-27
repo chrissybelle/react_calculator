@@ -1,0 +1,12 @@
+.flex-container {
+    display: flex;
+    justify-content: space-around;
+    flex-flow: row wrap;
+    width: 10rem;
+}
+
+button {
+    width: 2rem;
+    margin: 0.5rem;
+    padding: 0.5rem;
+}
