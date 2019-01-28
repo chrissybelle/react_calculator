@@ -9,7 +9,6 @@ class Button extends React.Component {
 
     handleClick(e) {
         let clickedBtn = e.target.value;
-        console.log(clickedBtn);
         this.props.onClick(clickedBtn);
     }
 
@@ -17,7 +16,7 @@ class Button extends React.Component {
         return (
             <div className="flex-container">
                 {this.props.btnValue.map(button => {
-                    return <button value={button} onClick={this.handleClick}>{button}</button>;
+                    return <button value={button} key={button} onClick={this.handleClick}>{button}</button>;
                 })}
             </div>
         );
