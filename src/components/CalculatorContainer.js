@@ -38,9 +38,9 @@ class CalculatorContainer extends React.Component {
         console.log(`operator indexes: ${operatorPosition}`);
         console.log(`operatorPosition.length: ${operatorPosition.length}`);
 
-        //validate input - checks if operators have been entered consecutively - this will result in error
-        for (let i=0; i<operatorPosition.length; i++) {
-            if (operatorPosition[i+1]-operatorPosition[i] === 1) {
+        //validate input - checks if operators have been entered consecutively; this will result in error
+        for (let i = 1; i < operatorPosition.length; i++) {
+            if (operatorPosition[i + 1] - operatorPosition[i] === 1) {
                 console.log("consecutive operators - ERROR");
                 this.setState({
                     total: "ERROR"
@@ -50,12 +50,10 @@ class CalculatorContainer extends React.Component {
         }
 
 
-
         const numberArray = [];
         const numberCount = operatorPosition.length - 1;
         let numberString = "";
         let operatorArray = [];
-
 
         console.log(`calculationString: ${calculationString}`);
         console.log(`numberCount: ${numberCount}`);
@@ -72,8 +70,6 @@ class CalculatorContainer extends React.Component {
                 }
 
             }
-            // console.log(`numberString: ${numberString}`);
-            // console.log(`operatorArray: ${operatorArray}`);
             numberArray.push(numberString);
             numberString = "";
         }
@@ -83,10 +79,10 @@ class CalculatorContainer extends React.Component {
 
         let calculatedTotal = 0;
 
-
+        //calculate!
         if (numberArray.length > 1 && numberArray.length === operatorArray.length + 1) {
 
-            //perform multiplication / division first - FIX FIX FIX
+            //perform multiplication & division first
             for (let i = 0; i < operatorArray.length; i++) {
 
                 // if both multiplication and division present, complete in left-to-right order
@@ -94,6 +90,7 @@ class CalculatorContainer extends React.Component {
                     if (operatorArray.indexOf("*") < operatorArray.indexOf("/")) {
                         calculatedTotal = numberArray[operatorArray.indexOf("*")] * numberArray[operatorArray.indexOf("*") + 1];
                         console.log(`multiplication done. calculatedTotal: ${calculatedTotal}`);
+                        //adjusts number Array and operator Array
                         numberArray[operatorArray.indexOf("*")] = numberArray[operatorArray.indexOf("*")] * numberArray[operatorArray.indexOf("*") + 1];
                         numberArray.splice(operatorArray.indexOf("*") + 1, 1);
                         operatorArray.splice(operatorArray.indexOf("*"), 1);
@@ -111,6 +108,7 @@ class CalculatorContainer extends React.Component {
                 }
             }
 
+            //perform any remaining multiplication / division
             for (let i = 0; i < operatorArray.length; i++) {
                 if (operatorArray.indexOf("*") >= 0) {
                     calculatedTotal = numberArray[operatorArray.indexOf("*")] * numberArray[operatorArray.indexOf("*") + 1];
@@ -131,12 +129,63 @@ class CalculatorContainer extends React.Component {
                     console.log(`updated operatorArray: ${operatorArray}`);
                     console.log(`updated numberArray: ${numberArray}`);
                 }
-                console.log(`division done. calculatedTotal: ${calculatedTotal}`);
             }
+
+            //if both addition & subtraction present, complete in left-to-right order
+            for (let i = 0; i < operatorArray.length; i++) {
+                if (operatorArray.indexOf("+") >= 0 && operatorArray.indexOf("-") >= 0) {
+                    if (operatorArray.indexOf("+") < operatorArray.indexOf("-")) {
+                        calculatedTotal = parseInt(numberArray[operatorArray.indexOf("+")]) + parseInt(numberArray[operatorArray.indexOf("+") + 1]);
+                        console.log(`addition done. ${numberArray[operatorArray.indexOf("+")]} + ${numberArray[operatorArray.indexOf("+") + 1]} calculatedTotal: ${calculatedTotal}`);
+                        numberArray[operatorArray.indexOf("+")] = parseInt(numberArray[operatorArray.indexOf("+")]) + parseInt(numberArray[operatorArray.indexOf("+") + 1]);
+                        numberArray.splice(operatorArray.indexOf("+") + 1, 1);
+                        operatorArray.splice(operatorArray.indexOf("+"), 1);
+                        console.log(`updated numberArray: ${numberArray}`);
+                        console.log(`updated operatorArray: ${operatorArray}`);
+                    } else {
+                        calculatedTotal = numberArray[operatorArray.indexOf("-")] - numberArray[operatorArray.indexOf("-") + 1];
+                        console.log(`subtraction done. calculatedTotal: ${calculatedTotal}`);
+                        numberArray[operatorArray.indexOf("-")] = numberArray[operatorArray.indexOf("-")] - numberArray[operatorArray.indexOf("-") + 1];
+                        numberArray.splice(operatorArray.indexOf("-") + 1, 1);
+                        operatorArray.splice(operatorArray.indexOf("-"), 1);
+                        console.log(`updated numberArray: ${numberArray}`);
+                        console.log(`updated operatorArray: ${operatorArray}`);
+                    }
+                }
+            }
+
+            //perform any remaining addition / subtraction
+            for (let i = 0; i < operatorArray.length; i++) {
+                if (operatorArray.indexOf("+") >= 0) {
+                    calculatedTotal = parseInt(numberArray[operatorArray.indexOf("+")]) + parseInt(numberArray[operatorArray.indexOf("+") + 1]);
+                    console.log(`addition done. calculatedTotal: ${calculatedTotal}`);
+                    numberArray[operatorArray.indexOf("+")] = parseInt(numberArray[operatorArray.indexOf("+")]) + parseInt(numberArray[operatorArray.indexOf("+") + 1]);
+                    numberArray.splice(operatorArray.indexOf("+") + 1, 1);
+                    operatorArray.splice(operatorArray.indexOf("+"), 1);
+                    console.log(`updated operatorArray: ${operatorArray}`);
+                    console.log(`updated numberArray: ${numberArray}`);
+                }
+
+                if (operatorArray.indexOf("-") >= 0) {
+                    calculatedTotal = numberArray[operatorArray.indexOf("-")] - numberArray[operatorArray.indexOf("-") + 1];
+                    console.log(`subtraction done. calculatedTotal: ${calculatedTotal}`);
+                    numberArray[operatorArray.indexOf("-")] = numberArray[operatorArray.indexOf("-")] - numberArray[operatorArray.indexOf("-") + 1];
+                    numberArray.splice(operatorArray.indexOf("-") + 1, 1);
+                    operatorArray.splice(operatorArray.indexOf("-"), 1);
+                    console.log(`updated operatorArray: ${operatorArray}`);
+                    console.log(`updated numberArray: ${numberArray}`);
+                }
+            }
+
+            this.setState({
+                total: calculatedTotal
+            })
+
         } else if (numberArray.length > 1 && numberArray.length !== operatorArray.length + 1) {
             this.setState({
                 total: "ERROR"
             })
+
         } else if (numberArray.length === 1) {
             this.setState({
                 total: numberArray[0]
