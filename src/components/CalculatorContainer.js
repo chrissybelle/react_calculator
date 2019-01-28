@@ -11,6 +11,8 @@ class CalculatorContainer extends React.Component {
         }
         this.logString = this.logString.bind(this);
         this.calculateTotal = this.calculateTotal.bind(this);
+        this.clearCalculator = this.clearCalculator.bind(this);
+        this.deleteLastKey = this.deleteLastKey.bind(this);
     }
 
     logString(loggedKey) {
@@ -191,25 +193,22 @@ class CalculatorContainer extends React.Component {
                 total: numberArray[0]
             })
         }
-
-
-
+    }
+    
+    //clear calculator
+    clearCalculator() {
+        this.setState({
+            calculationString: "",
+            total: ""
+        })
     }
 
-    // multiply() {
-    //     let calculatedTotal = numberArray[operatorArray.indexOf("*")] * numberArray[operatorArray.indexOf("*") + 1];
-    //     console.log(`multiplication done. calculatedTotal: ${calculatedTotal}`);
-    //     numberArray[operatorArray.indexOf("*")] = numberArray[operatorArray.indexOf("*")] * numberArray[operatorArray.indexOf("*") + 1];
-    //     numberArray.splice(operatorArray.indexOf("*"), 1);
-    //     operatorArray.splice(operatorArray.indexOf("*"),1);
-    //     console.log(`updated operatorArray: ${operatorArray}`);
-    //     console.log(`updated numberArray: ${numberArray}`);
-    // }
-
-
-    // logResult() {
-
-    // }
+    //delete last key
+    deleteLastKey() {
+        this.setState({
+            calculationString: this.state.calculationString.substring(0, (this.state.calculationString.length-1))
+        })
+    }
 
 
 
@@ -221,7 +220,8 @@ class CalculatorContainer extends React.Component {
             <div>
                 <Button btnValue={numberArray} onClick={this.logString} />
                 <Button btnValue={operatorArray} onClick={this.logString} />
-                <Button btnValue={["clear"]} onClick="" />
+                <Button btnValue={["backspace"]} onClick={this.deleteLastKey} />
+                <Button btnValue={["clear"]} onClick={this.clearCalculator} />
                 <h1>{this.state.calculationString}</h1>
                 <h1>Total: {this.state.total}</h1>
             </div>
