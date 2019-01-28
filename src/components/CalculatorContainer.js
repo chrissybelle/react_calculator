@@ -34,90 +34,83 @@ class CalculatorContainer extends React.Component {
     }
 
     calculateTotal() {
-        let operatorPosition = [];
-        // let calculationString = this.state.calculationString;
+        const operatorPosition = [0]; //zero in first index - used in for loop logic at bottom to separate numbers
+        const calculationString = this.state.calculationString;
 
-        // const findOperators = (startIndex) => {
-            //if a "*" operator exists in the string after the startIndex, add the position to the operatorOpsiiton array
-            // if (calculationString.indexOf("*") >= 0) {
-            //     operatorPosition.push(calculationString.indexOf("*", startIndex));
-            // }
-            // if (calculationString.indexOf("+") >= 0) {
-            //     operatorPosition.push(calculationString.indexOf("+", startIndex));
-            // }
-            // if (calculationString.indexOf("-") >= 0) {
-            //     operatorPosition.push(calculationString.indexOf("-", startIndex));
-            // }
-            // if (calculationString.indexOf("/") >= 0) {
-            //     operatorPosition.push(calculationString.indexOf("/", startIndex));
-            // }
-
-        //loop through string and find position of all operators
-        for (let i=0; i<this.state.calculationString.length; i++) {
-            console.log(this.state.calculationString[i]);
-            if (isNaN(this.state.calculationString[i])) {
+        //loop through string and find index position of all operators, store in operatorPosition
+        for (let i = 0; i < calculationString.length; i++) {
+            console.log(calculationString[i]);
+            if (isNaN(calculationString[i])) {
                 operatorPosition.push(i);
             }
         }
-            console.log(`operator indexes: ${operatorPosition}`);
-            operatorPosition.sort((a, b) => {
-                return a - b;
-            });
-            console.log(`sorted: ${operatorPosition}`);
-            console.log(operatorPosition[operatorPosition.length - 1]);
+        console.log(`operator indexes: ${operatorPosition}`);
+        operatorPosition.sort((a, b) => {
+            return a - b;
+        });
+        operatorPosition.push(calculationString.length);
+        console.log(`sorted: ${operatorPosition}`);
+        console.log(`operatorPosition.length: ${operatorPosition.length}`);
+        console.log(operatorPosition[operatorPosition.length - 1]);
+
+        const numberArray = [];
+        const numberCount = operatorPosition.length - 1;
+        let numberString = "";
+        let operatorArray = [];
+
+
+        console.log(`calculationString: ${calculationString}`);
+        console.log(`numberCount: ${numberCount}`);
+
+        //logic to separate out and store each number
+        for (let i = 0; i < numberCount; i++) {
+
+            for (let j = operatorPosition[i]; j < operatorPosition[i + 1]; j++) {
+
+                if (!isNaN(calculationString[j])) {
+                    numberString += calculationString[j];
+                } else {
+                    operatorArray.push(calculationString[j]);
+                }
+
+            }
+            console.log(`numberString: ${numberString}`);
+            console.log(`operatorArray: ${operatorArray}`);
+            numberArray.push(numberString);
+            numberString = "";
         }
 
-            // if (calculationString.indexOf("*",startIndex) >= 0 || calculationString.indexOf("/",startIndex) >= 0 || calculationString.indexOf("+",startIndex) >= 0 || calculationString.indexOf("-",startIndex) >= 0 ) {
-            //     operatorPosition.push(calculationString.indexOf("*",startIndex));
-            //     operatorPosition.push(calculationString.indexOf("/",startIndex));
-            //     operatorPosition.push(calculationString.indexOf("+",startIndex));
-            //     operatorPosition.push(calculationString.indexOf("-",startIndex));
-            // }
-    
+        console.log(`numberArray: ${numberArray}`);
 
+        let calculatedTotal = 0;
 
-        // let newStartIndex = operatorPosition[operatorPosition.length - 1];
+        //perform calculation - FIX FIX FIX
+        for (let i = 0; i < operatorArray.length; i++) {
 
-        // findOperators(newStartIndex);
-        // if (findOperators(newStartIndex))
+            // calculationString[operatorPosition[i]];
+            if (operatorArray.indexOf("*") >= 0) {
+                calculatedTotal = numberArray[operatorArray.indexOf("*")] * numberArray[operatorArray.indexOf("*") + 1];
+                operatorArray[operatorArray.indexOf("*")] = "done";
+                // numberArray[operatorArray.indexOf("*")] = numberArray[operatorArray.indexOf("*")] * numberArray[operatorArray.indexOf("*") + 1];
+                // numberArray.splice(operatorArray.indexOf("*") + 1, 1);
+                console.log(`operatorArray: ${operatorArray}`);
+                console.log(`updated numberArray: ${numberArray}`);
+            }
+            console.log(`multiplication done. calculatedTotal: ${calculatedTotal}`);
+            if (operatorArray.indexOf("/") >= 0) {
+                calculatedTotal = numberArray[operatorArray.indexOf("/")] * numberArray[operatorArray.indexOf("/") + 1];
+            }
+            console.log(`division done. calculatedTotal: ${calculatedTotal}`);
+        }
 
+    }
 
-
-
-    // logNumberOne(loggedNumber) {
-    //     this.setState({
-    //         firstNumber: this.state.firstNumber + loggedNumber
-    //     })
-    // }
-
-    // logOperator(loggedOperator) {
-    //     this.setState({
-    //         operator: loggedOperator,
-    //         operatorPressed: true
-    //     })
-    // }
-
-    // logNumberTwo(loggedNumber) {
-    //     this.setState({
-    //         secondNumber: this.state.secondNumber + loggedNumber
-    //     })
-    // }
 
     // logResult() {
 
     // }
 
-    // logButton(loggedButton) {
-    //     if (!this.state.operatorPressed) {
-    //         this.logNumberOne(loggedButton);
-    //     } else if (this.state.firstNumber && !this.state.operatorPressed) {
-    //         this.logOperator(loggedButton);
-    //     } else if (this.state.firstNumber && this.state.operatorPressed && !this.state.calculationDone) {
-    //         this.logNumberTwo(loggedButton);
-    //     } else if (this.state.firstNumber && this.state.operatorPressed && !this.state.secondNumber) {
-    //         this.logResult();
-    //     }
-    // }
+
 
     render() {
         let numberArray = [9, 8, 7, 6, 5, 4, 3, 2, 1, 0];
@@ -127,7 +120,9 @@ class CalculatorContainer extends React.Component {
             <div>
                 <Button btnValue={numberArray} onClick={this.logString} />
                 <Button btnValue={operatorArray} onClick={this.logString} />
+                <Button btnValue={["clear"]} onClick="" />
                 <h1>{this.state.calculationString}</h1>
+                <h1>Total:</h1>
             </div>
         );
     }
