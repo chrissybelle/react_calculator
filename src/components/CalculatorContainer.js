@@ -34,14 +34,22 @@ class CalculatorContainer extends React.Component {
                 operatorPosition.push(i);
             }
         }
-
-        // operatorPosition.sort((a, b) => {
-        //     return a - b;
-        // });
         operatorPosition.push(calculationString.length);
         console.log(`operator indexes: ${operatorPosition}`);
-        // console.log(`sorted: ${operatorPosition}`);
         console.log(`operatorPosition.length: ${operatorPosition.length}`);
+
+        //validate input - checks if operators have been entered consecutively - this will result in error
+        for (let i=0; i<operatorPosition.length; i++) {
+            if (operatorPosition[i+1]-operatorPosition[i] === 1) {
+                console.log("consecutive operators - ERROR");
+                this.setState({
+                    total: "ERROR"
+                })
+
+            }
+        }
+
+
 
         const numberArray = [];
         const numberCount = operatorPosition.length - 1;
@@ -75,56 +83,70 @@ class CalculatorContainer extends React.Component {
 
         let calculatedTotal = 0;
 
-        //perform multiplication / division first - FIX FIX FIX
-        for (let i = 0; i < operatorArray.length; i++) {
 
-            // if both multiplication and division present, complete in left to right order
-            if (operatorArray.indexOf("*") >= 0 && operatorArray.indexOf("/") >=0) {
-                if (operatorArray.indexOf("*") < operatorArray.indexOf("/")) {
+        if (numberArray.length > 1 && numberArray.length === operatorArray.length + 1) {
+
+            //perform multiplication / division first - FIX FIX FIX
+            for (let i = 0; i < operatorArray.length; i++) {
+
+                // if both multiplication and division present, complete in left-to-right order
+                if (operatorArray.indexOf("*") >= 0 && operatorArray.indexOf("/") >= 0) {
+                    if (operatorArray.indexOf("*") < operatorArray.indexOf("/")) {
+                        calculatedTotal = numberArray[operatorArray.indexOf("*")] * numberArray[operatorArray.indexOf("*") + 1];
+                        console.log(`multiplication done. calculatedTotal: ${calculatedTotal}`);
+                        numberArray[operatorArray.indexOf("*")] = numberArray[operatorArray.indexOf("*")] * numberArray[operatorArray.indexOf("*") + 1];
+                        numberArray.splice(operatorArray.indexOf("*") + 1, 1);
+                        operatorArray.splice(operatorArray.indexOf("*"), 1);
+                        console.log(`updated numberArray: ${numberArray}`);
+                        console.log(`updated operatorArray: ${operatorArray}`);
+                    } else {
+                        calculatedTotal = numberArray[operatorArray.indexOf("/")] / numberArray[operatorArray.indexOf("/") + 1];
+                        console.log(`division done. calculatedTotal: ${calculatedTotal}`);
+                        numberArray[operatorArray.indexOf("/")] = numberArray[operatorArray.indexOf("/")] / numberArray[operatorArray.indexOf("/") + 1];
+                        numberArray.splice(operatorArray.indexOf("/") + 1, 1);
+                        operatorArray.splice(operatorArray.indexOf("/"), 1);
+                        console.log(`updated numberArray: ${numberArray}`);
+                        console.log(`updated operatorArray: ${operatorArray}`);
+                    }
+                }
+            }
+
+            for (let i = 0; i < operatorArray.length; i++) {
+                if (operatorArray.indexOf("*") >= 0) {
                     calculatedTotal = numberArray[operatorArray.indexOf("*")] * numberArray[operatorArray.indexOf("*") + 1];
                     console.log(`multiplication done. calculatedTotal: ${calculatedTotal}`);
                     numberArray[operatorArray.indexOf("*")] = numberArray[operatorArray.indexOf("*")] * numberArray[operatorArray.indexOf("*") + 1];
-                    numberArray.splice(operatorArray.indexOf("*")+1, 1);
-                    operatorArray.splice(operatorArray.indexOf("*"),1);
-                    console.log(`updated numberArray: ${numberArray}`);
+                    numberArray.splice(operatorArray.indexOf("*") + 1, 1);
+                    operatorArray.splice(operatorArray.indexOf("*"), 1);
                     console.log(`updated operatorArray: ${operatorArray}`);
-                } else {
+                    console.log(`updated numberArray: ${numberArray}`);
+                }
+
+                if (operatorArray.indexOf("/") >= 0) {
                     calculatedTotal = numberArray[operatorArray.indexOf("/")] / numberArray[operatorArray.indexOf("/") + 1];
                     console.log(`division done. calculatedTotal: ${calculatedTotal}`);
                     numberArray[operatorArray.indexOf("/")] = numberArray[operatorArray.indexOf("/")] / numberArray[operatorArray.indexOf("/") + 1];
-                    numberArray.splice(operatorArray.indexOf("/")+1, 1);
-                    operatorArray.splice(operatorArray.indexOf("/"),1);
-                    console.log(`updated numberArray: ${numberArray}`);
+                    numberArray.splice(operatorArray.indexOf("/") + 1, 1);
+                    operatorArray.splice(operatorArray.indexOf("/"), 1);
                     console.log(`updated operatorArray: ${operatorArray}`);
+                    console.log(`updated numberArray: ${numberArray}`);
                 }
-            }
-        }
-
-        for (let i = 0; i < operatorArray.length; i++) {
-            if (operatorArray.indexOf("*") >= 0) {
-                calculatedTotal = numberArray[operatorArray.indexOf("*")] * numberArray[operatorArray.indexOf("*") + 1];
-                console.log(`multiplication done. calculatedTotal: ${calculatedTotal}`);
-                numberArray[operatorArray.indexOf("*")] = numberArray[operatorArray.indexOf("*")] * numberArray[operatorArray.indexOf("*") + 1];
-                numberArray.splice(operatorArray.indexOf("*")+1, 1);
-                operatorArray.splice(operatorArray.indexOf("*"),1);
-                console.log(`updated operatorArray: ${operatorArray}`);
-                console.log(`updated numberArray: ${numberArray}`);
-            }
-
-            if (operatorArray.indexOf("/") >= 0) {
-                calculatedTotal = numberArray[operatorArray.indexOf("/")] / numberArray[operatorArray.indexOf("/") + 1];
                 console.log(`division done. calculatedTotal: ${calculatedTotal}`);
-                numberArray[operatorArray.indexOf("/")] = numberArray[operatorArray.indexOf("/")] / numberArray[operatorArray.indexOf("/") + 1];
-                numberArray.splice(operatorArray.indexOf("/")+1, 1);
-                operatorArray.splice(operatorArray.indexOf("/"),1);
-                console.log(`updated operatorArray: ${operatorArray}`);
-                console.log(`updated numberArray: ${numberArray}`);
             }
-            console.log(`division done. calculatedTotal: ${calculatedTotal}`);
+        } else if (numberArray.length > 1 && numberArray.length !== operatorArray.length + 1) {
+            this.setState({
+                total: "ERROR"
+            })
+        } else if (numberArray.length === 1) {
+            this.setState({
+                total: numberArray[0]
+            })
         }
+
+
 
     }
-    
+
     // multiply() {
     //     let calculatedTotal = numberArray[operatorArray.indexOf("*")] * numberArray[operatorArray.indexOf("*") + 1];
     //     console.log(`multiplication done. calculatedTotal: ${calculatedTotal}`);
@@ -152,7 +174,7 @@ class CalculatorContainer extends React.Component {
                 <Button btnValue={operatorArray} onClick={this.logString} />
                 <Button btnValue={["clear"]} onClick="" />
                 <h1>{this.state.calculationString}</h1>
-                <h1>Total:</h1>
+                <h1>Total: {this.state.total}</h1>
             </div>
         );
     }
