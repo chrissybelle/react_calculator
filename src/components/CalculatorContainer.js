@@ -16,14 +16,15 @@ class CalculatorContainer extends React.Component {
     }
 
     logString(loggedKey) {
-        if (loggedKey !== "=") {
+        if (loggedKey !== "=" && loggedKey !== "Enter" && loggedKey !== "Backspace") {
             this.setState({
                 calculationString: this.state.calculationString + loggedKey
             })
-        } else if (loggedKey === "=") {
+        } else if (loggedKey === "Enter" || loggedKey === "=") {
             this.calculateTotal();
+        } else if (loggedKey === "Backspace") {
+            this.deleteLastKey();
         }
-
     }
 
     calculateTotal() {
@@ -209,6 +210,7 @@ class CalculatorContainer extends React.Component {
 
     //clear calculator
     clearCalculator() {
+        console.log("cleared");
         this.setState({
             calculationString: "",
             total: ""
@@ -217,6 +219,7 @@ class CalculatorContainer extends React.Component {
 
     //delete last key
     deleteLastKey() {
+        console.log("deleted");
         this.setState({
             calculationString: this.state.calculationString.substring(0, (this.state.calculationString.length - 1))
         })
@@ -233,11 +236,13 @@ class CalculatorContainer extends React.Component {
                     <h1>{this.state.calculationString}</h1>
                     {this.state.total ? <h1>Total: {this.state.total}</h1> : ""}
                 </div>
+                <div className="calculator-buttons">
+                    <Button btnValue={numberArray} onClick={this.logString} onKeyDown={this.logString} />
+                    <Button btnValue={operatorArray} onClick={this.logString} onKeyDown={this.logString} />
+                    <Button btnValue={["backspace"]} onClick={this.deleteLastKey} onKeyDown={this.deleteLastKey} />
+                    <Button btnValue={["clear"]} onClick={this.clearCalculator} onKeyDown={this.logString} />
+                </div>
 
-                <Button btnValue={numberArray} onClick={this.logString} />
-                <Button btnValue={operatorArray} onClick={this.logString} />
-                <Button btnValue={["backspace"]} onClick={this.deleteLastKey} />
-                <Button btnValue={["clear"]} onClick={this.clearCalculator} />
 
             </div>
         );
