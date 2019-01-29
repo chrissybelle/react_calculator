@@ -1,0 +1,19 @@
+.calculator-container {
+    margin: 0 auto;
+    width: 30rem;
+}
+
+.calculator-display {
+    background-color: #fdfdae;
+    width: 23rem;
+    font-size: 2rem;
+    flex-flow: row wrap;
+    font-family: Poppins;
+    margin: 5px auto;
+
+}
+
+.calculator-buttons {
+    font-family: Poppins;
+    margin: 5px auto;
+}

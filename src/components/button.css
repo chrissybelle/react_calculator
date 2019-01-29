@@ -2,11 +2,15 @@
     display: flex;
     justify-content: space-around;
     flex-flow: row wrap;
-    width: 10rem;
+    width: 23rem;
+    margin: 5px auto;
+    
 }
 
 button {
-    width: 2rem;
+    width: auto;
     margin: 0.5rem;
-    padding: 0.5rem;
+    padding: 1rem;
+    border: 1px solid #999999;
+    border-radius: 5px;
 }
