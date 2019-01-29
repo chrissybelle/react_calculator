@@ -16,12 +16,15 @@ class CalculatorContainer extends React.Component {
     }
 
     logString(loggedKey) {
+        //if number button clicked or number key pressed, log number
         if (loggedKey !== "=" && loggedKey !== "Enter" && loggedKey !== "Backspace") {
             this.setState({
                 calculationString: this.state.calculationString + loggedKey
             })
+        //if "=" button clicked or "Enter" key pressed, calculate total
         } else if (loggedKey === "Enter" || loggedKey === "=") {
             this.calculateTotal();
+        //if "backspace" button clicked or key pressed, delete last character
         } else if (loggedKey === "Backspace") {
             this.deleteLastKey();
         }

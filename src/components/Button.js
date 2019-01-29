@@ -17,34 +17,25 @@ class Button extends React.Component {
     handleKeyDown(e) {
         e.preventDefault();
         let pressedBtn = e.key;
-        console.log(pressedBtn);
+        //if key is a number, log the number
         if (!isNaN(pressedBtn)) {
             this.props.onKeyDown(pressedBtn);
-            console.log(`${pressedBtn}: key pressed`);
-        }
-        if (pressedBtn === "Backspace") {
-            this.props.onKeyDown(pressedBtn);
-            console.log(`${pressedBtn}: key pressed`);
-        }
-        if (pressedBtn === "Enter") {
-            this.props.onKeyDown(pressedBtn);
-            console.log(`${pressedBtn}: key pressed`);
-        }
-        if (pressedBtn === "+") {
-            this.props.onKeyDown(pressedBtn);
-            console.log(`${pressedBtn}: key pressed`);
-        }
-        if (pressedBtn === "-") {
-            this.props.onKeyDown(pressedBtn);
-            console.log(`${pressedBtn}: key pressed`);
-        }
-        if (pressedBtn === "*") {
-            this.props.onKeyDown(pressedBtn);
-            console.log(`${pressedBtn}: key pressed`);
-        }
-        if (pressedBtn === "/") {
-            this.props.onKeyDown(pressedBtn);
-            console.log(`${pressedBtn}: key pressed`);
+            console.log(`${pressedBtn}: # key pressed`);
+        } else {
+            //if key matches operators or "backspace" or "enter", perform relevant function
+            switch (pressedBtn) {
+                case "Backspace":
+                case "Enter":
+                case "+":
+                case "-":
+                case "*":
+                case "/":
+                    this.props.onKeyDown(pressedBtn);
+                    console.log(`${pressedBtn}: key pressed`);
+                    break;
+                default:
+                    console.log(`${pressedBtn}: non-key pressed`);
+            }
         }
     }
 
