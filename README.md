@@ -1,4 +1,4 @@
-#React Calculator
+# React Calculator
 
 This is a functional calculator that can complete calculations (addition, subtraction, multiplication, and division) using the proper order of operations. 
 
