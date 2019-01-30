@@ -237,7 +237,9 @@ class CalculatorContainer extends React.Component {
             <div className="calculator-container">
                 <div className="calculator-display">
                     <h1>{this.state.calculationString}</h1>
-                    {this.state.total ? <h1 className="total">Total: {this.state.total}</h1> : ""}
+                </div>
+                <div className="calculator-total">
+                    {this.state.total ? <h1 className="total">={this.state.total}</h1> : ""}
                 </div>
                 <div className="calculator-buttons">
                     <div className="calculator-row-one">
