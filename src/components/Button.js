@@ -1,6 +1,7 @@
 import React from "react";
 import "./button.css";
 
+
 class Button extends React.Component {
     constructor(props) {
         super(props);
@@ -43,7 +44,7 @@ class Button extends React.Component {
         return (
             <div className="flex-container">
                 {this.props.btnValue.map(button => {
-                    return <button autoFocus value={button} key={button} onClick={this.handleClick} onKeyDown={this.handleKeyDown}>{button}</button>;
+                    return <button autoFocus className={`${this.props.className} button-${button}`} value={button} key={button} onClick={this.handleClick} onKeyDown={this.handleKeyDown}>{button}</button>;
                 })}
             </div>
         );
@@ -51,3 +52,4 @@ class Button extends React.Component {
 };
 
 export default Button;
+

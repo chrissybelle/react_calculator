@@ -21,10 +21,10 @@ class CalculatorContainer extends React.Component {
             this.setState({
                 calculationString: this.state.calculationString + loggedKey
             })
-        //if "=" button clicked or "Enter" key pressed, calculate total
+            //if "=" button clicked or "Enter" key pressed, calculate total
         } else if (loggedKey === "Enter" || loggedKey === "=") {
             this.calculateTotal();
-        //if "backspace" button clicked or key pressed, delete last character
+            //if "backspace" button clicked or key pressed, delete last character
         } else if (loggedKey === "Backspace") {
             this.deleteLastKey();
         }
@@ -237,13 +237,20 @@ class CalculatorContainer extends React.Component {
             <div className="calculator-container">
                 <div className="calculator-display">
                     <h1>{this.state.calculationString}</h1>
-                    {this.state.total ? <h1>Total: {this.state.total}</h1> : ""}
+                    {this.state.total ? <h1 className="total">Total: {this.state.total}</h1> : ""}
                 </div>
                 <div className="calculator-buttons">
-                    <Button btnValue={numberArray} onClick={this.logString} onKeyDown={this.logString} />
-                    <Button btnValue={operatorArray} onClick={this.logString} onKeyDown={this.logString} />
-                    <Button btnValue={["backspace"]} onClick={this.deleteLastKey} onKeyDown={this.deleteLastKey} />
-                    <Button btnValue={["clear"]} onClick={this.clearCalculator} onKeyDown={this.logString} />
+                    <div className="calculator-row-one">
+                        <Button className="calculator-buttons-backspace" btnValue={["Backspace"]} onClick={this.deleteLastKey} onKeyDown={this.deleteLastKey} />
+                        <Button className="calculator-buttons-clear" btnValue={["Clear"]} onClick={this.clearCalculator} onKeyDown={this.logString} />
+                    </div>
+                    <div className="calculator-body">
+                        <Button className="calculator-buttons-numbers" btnValue={numberArray} onClick={this.logString} onKeyDown={this.logString} />
+                        <Button className="calculator-buttons-operators" btnValue={operatorArray} onClick={this.logString} onKeyDown={this.logString} />
+                    </div>
+
+
+
                 </div>
 
 
